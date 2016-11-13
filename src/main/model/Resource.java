@@ -1,4 +1,4 @@
-package model;
+package src.main.model;
 
 /**
  * Enum indicating the different type of resources

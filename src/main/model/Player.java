@@ -1,4 +1,9 @@
-package model;
+package src.main.model;
+
+import java.util.List;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.awt.Color;
 
 /** 
  *  Keeps track of all the information for the player. Most actions are done by the game
@@ -49,18 +54,18 @@ public class Player {
      */
     public Player(Color color) {
         this.color = color;
-        points = 0;
-        settlements = 0;
-        roads = 0;
-        cities = 0;
-        hand = new ArrayList<Resource>();
-        devHand = new ArrayList<DevelopmentCard>();
-        receivedDevCards = new ArrayList<DevelopmentCard>();
-        tradeCosts = new HashMap<Resource, Integer>();
+        this.points = 0;
+        this.settlements = 0;
+        this.roads = 0;
+        this.cities = 0;
+        this.hand = new ArrayList<Resource>();
+        this.devHand = new ArrayList<DevelopmentCard>();
+        this.receivedDevCards = new ArrayList<DevelopmentCard>();
+        this.tradeCosts = new HashMap<Resource, Integer>();
         for (Resource r : Resource.values()) {
-            tradeCosts.put(r, 4);
+            this.tradeCosts.put(r, 4);
         }
-        hasPlayedDev = false;
+        this.hasPlayedDev = false;
     }
 
     /** The maximum number of settlements that a single player can play. */
@@ -71,4 +76,8 @@ public class Player {
 
     /** The maximum number of cities that a single player can play. */
     public static final int MAX_CITIES = 3;
+
+    public static void main(String[] args) {
+        System.out.println("Hello world");
+    }
 }
