@@ -26,6 +26,9 @@ public class Player {
     /** The number of cities the player has on the board. */
     private int cities;
 
+    /** The number of knights that the player has played. */
+    private int knights;
+
     /** The hand of resources that the player owns. */
     private List<Resource> hand;
 
@@ -58,6 +61,7 @@ public class Player {
         this.settlements = 0;
         this.roads = 0;
         this.cities = 0;
+        this.knights = 0;
         this.hand = new ArrayList<Resource>();
         this.devHand = new ArrayList<DevelopmentCard>();
         this.receivedDevCards = new ArrayList<DevelopmentCard>();
