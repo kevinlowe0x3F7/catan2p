@@ -10,5 +10,6 @@ public enum DevelopmentCard {
     KNIGHT,
     MONOPOLY,
     ROADS,
+    VICTORY,
     PLENTY
 }

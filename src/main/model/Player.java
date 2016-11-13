@@ -63,7 +63,7 @@ public class Player {
         this.receivedDevCards = new ArrayList<DevelopmentCard>();
         this.tradeCosts = new HashMap<Resource, Integer>();
         for (Resource r : Resource.values()) {
-            this.tradeCosts.put(r, 4);
+            this.tradeCosts.put(r, INIT_MARITIME_COST);
         }
         this.hasPlayedDev = false;
     }
@@ -76,6 +76,9 @@ public class Player {
 
     /** The maximum number of cities that a single player can play. */
     public static final int MAX_CITIES = 3;
+
+    /** The number that a player needs to trade for maritime, initially. */
+    public static final int INIT_MARITIME_COST = 4;
 
     public static void main(String[] args) {
         System.out.println("Hello world");
