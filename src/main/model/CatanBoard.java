@@ -1,6 +1,9 @@
 package src.main.model;
 
 import java.util.HashMap;
+import java.util.Collections;
+import java.util.List;
+import java.util.ArrayList;
 /**
  * Represents the board itself in the game. Helps to handle the placing of buildings and
  * roads, ensuring that is in a valid state and abstracts away the details of the hex setup
@@ -23,35 +26,62 @@ public class CatanBoard {
      */
     public CatanBoard() {
         this.board = new HashMap<Point, HexPiece>();
-        fillBoard(board);
+        List<Resource> tiles = fillInTiles();
+        for (int i = 0; i < TOTAL_TILES; i++) {
+            Resource res = tiles.get(i);
+            Point pos = new Point(hexPoints[i][0], hexPoints[i][1]);
+            int num = diceNums[i];
+            this.board.put(pos, new HexPiece(num, res));
+        }
     }
 
     /**
-     * Fill in the internal board structure with the hex tiles
-     * 
-     * @param board  the board map to be filled in
+     * Fill in the tiles, with the correct number of each based on the 2-player variant.
+     *
+     * @return The list of tiles, shuffled
      */
-    private void fillBoard(HashMap<Point, HexPiece> board) {
+    private List<Resource> fillInTiles() {
         List<Resource> tiles = new ArrayList<Resource>();
-        // TODO add in tiles based on correct counts in 2 player variant
-        int tileIdx = 0;
-        for (int c = 0; c < 5; c++) {
-            if (c == 0 || c == 4) {
-                for (int r = 1; r <= 2; r++) {
-                    board.put(new Point(r, c), tiles.get(tileIdx));
-                    tileIdx += 1;
-                }
-            } else if (c == 1 || c == 3) {
-                for (int r = 0; r <= 2; r++) {
-                    board.put(new Point(r, c), tiles.get(tileIdx));
-                    tileIdx += 1;
-                }
-            } else {
-                for (int r = 0; r <= 3; r++) {
-                    board.put(new Point(r, c), tiles.get(tileIdx));
-                    tileIdx += 1;
-                }
-            }
+        for (int i = 0; i < FIELDS; i++) {
+            tiles.add(Resource.WHEAT);
         }
+        for (int i = 0; i < FORESTS; i++) {
+            tiles.add(Resource.WOOD);
+        }
+        for (int i = 0; i < PASTURES; i++) {
+            tiles.add(Resource.SHEEP);
+        }
+        for (int i = 0; i < MOUNTAINS; i++) {
+            tiles.add(Resource.ORE);
+        }
+        for (int i = 0; i < HILLS; i++) {
+            tiles.add(Resource.BRICK);
+        }
+        Collections.shuffle(tiles);
+        return tiles;
     }
+
+    /** The points of the hex tiles in spiral ordering, used to place the dice numbers. */
+    private final int[][] hexPoints = {{2,0},{2,1},{3,2},{2,3},{2,4},{1,4},{0,3},{0,2},
+                                        {0,1},{1,0},{1,1},{2,2},{1,3},{1,2}};
+    /** The dice numbers in spiral order, should correspond to hexPoints. */
+    private final int[] diceNums = {5, 2, 6, 3, 8, 10, 9, 11, 4, 8, 10, 9, 5, 4};
+
+    /** The total number of tiles on the board. */
+    private static final int TOTAL_TILES = 14;
+
+    /** The number of hexes for the wheat resource. */
+    public static final int FIELDS = 3;
+
+    /** The number of hexes for the wood resource. */
+    public static final int FORESTS = 3;
+
+    /** The number of hexes for the sheep resource. */
+    public static final int PASTURES = 3;
+
+    /** The number of hexes for the ore resource. */
+    public static final int MOUNTAINS = 2;
+
+    /** The number of hexes for the brick resource. */
+    public static final int HILLS = 3;
 }

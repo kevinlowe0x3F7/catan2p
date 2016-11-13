@@ -8,6 +8,18 @@ public enum Resource {
     SHEEP,
     ORE,
     WHEAT,
-    WOOD
+    WOOD;
+
+    @Override
+    public String toString() {
+        switch(this) {
+            case BRICK: return "brick";
+            case SHEEP: return "sheep";
+            case ORE:   return "ore";
+            case WHEAT: return "wheat";
+            case WOOD:  return "wood";
+            default:    return "";
+        }
+    }
 }
 

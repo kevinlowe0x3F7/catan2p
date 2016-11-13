@@ -38,8 +38,8 @@ public class CatanGame {
     /**
      * Initializes a new game of Catan.
      * 
-     * @param color1 The color for player 1
-     * @param color2 The color for player 2
+     * @param color1  The color for player 1
+     * @param color2  The color for player 2
      */
     public CatanGame(Color color1, Color color2) {
         this.player1 = new Player(color1);
