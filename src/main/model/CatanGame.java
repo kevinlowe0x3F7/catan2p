@@ -172,6 +172,11 @@ public class CatanGame {
     // TODO year of plenty method
     // TODO monopoly method
     // TODO maritime trade
+    // TODO can build settlement (resources, not exceeding max, distance rule)
+    // TODO can build road (resources, not exceeding max, connecting rule)
+    // TODO can build cities (resources, not exceeding max, on top of previous settlement)
+    // TODO check win method
+    // TODO end turn method
 
     /** The number of cards in the development deck. */
     public static final int DEV_DECK_SIZE = 18;

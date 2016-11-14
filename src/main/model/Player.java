@@ -53,15 +53,6 @@ public class Player {
     private boolean hasPlayedDev;
 
     /**
-     * Add a resource into the player's hand.
-     *
-     * @param res  The resource to add
-     */
-    public void addResource(Resource res) {
-        hand.add(res);
-    }
-
-    /**
      * Initialize a new player, with a specified color
      *
      * @param color  the color to identify the player
@@ -83,6 +74,101 @@ public class Player {
         this.hasPlayedDev = false;
     }
 
+    /**
+     * Add a resource into the player's hand.
+     *
+     * @param res  The resource to add
+     */
+    public void addResource(Resource res) {
+        hand.add(res);
+    }
+
+    /**
+     * Remove a resource from the player's hand, if the player doesn't have that resource,
+     * then do nothing
+     *
+     * @param res  The type of resource to remove
+     */
+    public void removeResource(Resource res) {
+        hand.remove(res);
+    }
+
+    /**
+     * Add a road, which for the player just increments the number of roads. The game handles
+     * the checking and removal of resources.
+     */
+    public void buildRoad() {
+        roads += 1;
+    }
+
+    /**
+     * Add a settlement, which for the player just increments the number of settlements.
+     * The game handles the checking and removal of resources.
+     */
+    public void buildSettlement() {
+        settlements += 1;
+    }
+
+    /**
+     * Add a city, which for the player just increments the number of cities. The game
+     * handles the checking and removal of resources.
+     */
+    public void buildCity() {
+        cities += 1;
+    }
+
+    /**
+     * Add a knight, which simply increments the count for the player.
+     */
+    public void playKnight() {
+        knights += 1;
+    }
+
+    /**
+     * Return the number of roads the player has played.
+     *
+     * @return the number of roads the player has played.
+     */
+    public int roads() {
+        return roads;
+    }
+
+    /**
+     * Return the number of settlements the player has played.
+     *
+     * @return the number of settlements the player has played.
+     */
+    public int settlements() {
+        return settlements;
+    }
+
+    /**
+     * Return the number of cities the player has played.
+     *
+     * @return the number of cities the player has played.
+     */
+    public int cities() {
+        return cities;
+    }
+
+    /**
+     * Return the number of knights the player has played.
+     *
+     * @return the number of knights the player has played.
+     */
+    public int knights() {
+        return knights;
+    }
+
+    /**
+     * Return the size of the player's resource hand.
+     *
+     * @return the size of the player's resource hand.
+     */
+    public int resHandSize() {
+        return hand.size();
+    }
+
     /** The maximum number of settlements that a single player can play. */
     public static final int MAX_SETTLEMENTS = 4;
 
@@ -94,8 +180,4 @@ public class Player {
 
     /** The number that a player needs to trade for maritime, initially. */
     public static final int INIT_MARITIME_COST = 4;
-
-    public static void main(String[] args) {
-        System.out.println("Hello world");
-    }
 }
