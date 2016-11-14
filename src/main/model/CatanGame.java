@@ -93,72 +93,85 @@ public class CatanGame {
     }
 
     /**
-     * Allocates resources to the two players based on the die roll
+     * Allocates resources to the two players based on the die roll. First checks to see if
+     * there are enough resources in supply for everyone. If there is, then distribute out,
+     * otherwise do nothing for that resource.
      *
      * @param num  the number that was just rolled
-     * @param player  the current player, which gets resources first (in the rare case that
-     *                resources are running out)
      */
-    public void distributeResources(int num, Player player) {
-        for (HexPiece tile : board.getTiles) {
-            if (tile.roll() == num) {
-                distributeFromTile(tile, player);
+    public void distributeResources(int num) {
+        HashMap<Resource, Integer> requested1 = new HashMap<Resource, Integer>();
+        HashMap<Resource, Integer> requested2 = new HashMap<Resource, Integer>();
+        for (Resource r : Resource.values()) {
+            requested1.put(r, 0);
+            requested2.put(r, 0);
+        }
+        for (HexPiece tile : tilesForNum(num)) {
+            Resource res = tile.resource();
+            for (Building building : tile.getBuildings()) {
+                if (building.owner() == player1) {
+                    if (building.type().equals(Building.SETTLEMENT)) {
+                        requested1.put(res, requested1.get(res) + 1);
+                    } else {
+                        requested1.put(res, requested1.get(res) + 2);
+                    }
+                } else {
+                    if (building.type().equals(Building.SETTLEMENT)) {
+                        requested2.put(res, requested2.get(res) + 1);
+                    } else {
+                        requested2.put(res, requested2.get(res) + 2);
+                    }
+                }
+            }
+        }
+        for (Resource r : Resource.values()) {
+            int totalRequested = requested1.get(r) + requested2.get(r);
+            if (totalRequested <= resources.get(r)) {
+                for (int i = 0; i < requested1.get(r); i++) {
+                    player1.addResource(r);
+                }
+                for (int i = 0; i < requested2.get(r); i++) {
+                    player2.addResource(r);
+                }
+                resources.put(r, resources.get(r) - totalRequested);
             }
         }
     }
 
     /**
-     * Distribute resources coming from one hex piece based on the current buildings on it.
-     * Makes two passes to ensure that the current player receives their resources first.
+     * Gets the hex tiles that correspond to a dice roll
      *
-     * @param tile  the tile where the buildings are on
-     * @param player  the current player
+     * @param num  The dice sum number to check for
+     *
+     * @return a list of hex tiles with the same number as num
      */
-    public void distributeFromTile(HexPiece tile, Player player) {
-        Resource res = tile.resource();
-        List<Building> buildings = tiles.getBuildings();
-        for (Building building : buildings) {
-            Player owner = building.owner();
-            if (owner == player) {
-                if (building.type().equals(Building.SETTLEMENT) && resources.get(res) > 0) {
-                    owner.addResource(res);
-                    resources.put(res, resources.get(res) - 1);
-                } else if (building.type().equals(Building.CITY)) {
-                    int resourceAmt = resources.get(res);
-                    if (resourceAmt >= 2) {
-                        owner.addResource(res);
-                        owner.addResource(res);
-                        resources.put(res, resources.get(res) - 2);
-                    } else if (resourceAmt == 1) {
-                        owner.addResource(res);
-                        resources.put(res, resources.get(res) - 1);
-                    }
+    public List<HexPiece> tilesForNum(int num) {
+        List<HexPiece> tiles = new ArrayList<HexPiece>();
+        for (HexPiece tile : board.getTiles()) {
+            if (num == 12) {
+                if (tile.num() == 2) {
+                    tiles.add(tile);
+                    return tiles;
+                }
+            } else {
+                if (tile.num() == num) {
+                    tiles.add(tile);
                 }
             }
         }
-        for (Building building : buildings) {
-            Player owner = building.owner();
-            if (owner != player) {
-                if (building.type().equals(Building.SETTLEMENT) && resources.get(res) > 0) {
-                    owner.addResource(res);
-                    resources.put(res, resources.get(res) - 1);
-                } else if (building.type().equals(Building.CITY)) {
-                    int resourceAmt = resources.get(res);
-                    if (resourceAmt >= 2) {
-                        owner.addResource(res);
-                        owner.addResource(res);
-                        resources.put(res, resources.get(res) - 2);
-                    } else if (resourceAmt == 1) {
-                        owner.addResource(res);
-                        resources.put(res, resources.get(res) - 1);
-                    }
-                }
-            }
-        }
+        return tiles;
     }
 
-
-
+    // TODO build road method
+    // TODO build settlement method
+    // TODO build city method
+    // TODO initial location choosing
+    // TODO handle 7 roll / knight played method
+    // TODO victory point devo card
+    // TODO road building method
+    // TODO year of plenty method
+    // TODO monopoly method
+    // TODO maritime trade
 
     /** The number of cards in the development deck. */
     public static final int DEV_DECK_SIZE = 18;
