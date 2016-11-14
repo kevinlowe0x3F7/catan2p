@@ -9,6 +9,8 @@ import java.util.Objects;
  * The definitions of the rows and cols for a hex grid are given here:
  * http://www.quarkphysics.ca/scripsi/hexgrid/
  *
+ * TODO test hexpoint hashing and equals
+ *
  * @author Kevin Lowe
  */
 public class HexPoint {

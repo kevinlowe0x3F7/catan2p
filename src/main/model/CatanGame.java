@@ -63,6 +63,8 @@ public class CatanGame {
 
     /**
      * Fills in a brand new development deck and shuffles it.
+     *
+     * TODO check size of dev deck
      */
     private void initializeDevDeck() {
         this.devDeck = new ArrayList<DevelopmentCard>();
@@ -97,6 +99,8 @@ public class CatanGame {
      * Allocates resources to the two players based on the die roll. First checks to see if
      * there are enough resources in supply for everyone. If there is, then distribute out,
      * otherwise do nothing for that resource.
+     *
+     * TODO test distribution of resources
      *
      * @param num  the number that was just rolled
      */
@@ -143,7 +147,8 @@ public class CatanGame {
     }
 
     /**
-     * Gets the hex tiles that correspond to a dice roll
+     * Gets the hex tiles that correspond to a dice roll.
+     * TODO test that numbers are correct, especially for 2/12
      *
      * @param num  The dice sum number to check for
      *

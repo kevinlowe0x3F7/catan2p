@@ -75,6 +75,15 @@ public class Player {
     }
 
     /**
+     * Return the color of this player.
+     *
+     * @return the color that this player is identified by
+     */
+    public Color color() {
+        return color;
+    }
+
+    /**
      * Add a resource into the player's hand.
      *
      * @param res  The resource to add

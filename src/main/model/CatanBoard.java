@@ -39,6 +39,7 @@ public class CatanBoard {
 
     /**
      * Fill in the tiles, with the correct number of each based on the 2-player variant.
+     * TODO check size of tiles is correct
      *
      * @return The list of tiles, shuffled
      */
@@ -79,6 +80,7 @@ public class CatanBoard {
     /**
      * Given a point indicating a hex, along with a location, returns the adjacent hex,
      * or null if none exists.
+     * TODO test getting adjacent hex
      *
      * @param hex  the point identifying the hex
      * @param location  the location for the adjacent hex with respect to the current hex
