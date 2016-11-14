@@ -203,7 +203,10 @@ public class CatanGame {
      * @return true if a road can be placed here, false otherwise
      */
     public boolean canBuildRoad(HexPoint hex, HexPiece.RoadLoc loc, Player player) {
-        return false;
+        if (board.hasRoad(hex, loc)) {
+            return false;
+        }
+        Color playerColor = player.color();
     }
 
     // TODO build settlement method (check for harbors as well)

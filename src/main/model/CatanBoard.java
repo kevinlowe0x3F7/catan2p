@@ -165,6 +165,23 @@ public class CatanBoard {
         return road != null;
     }
 
+    /**
+     * Returns the road color at the specified location on a given HexPoint, or null if none
+     * exists.
+     *
+     * @param hexPt  the hexpoint to get the road from
+     * @param loc  the road loc
+     *
+     * @return the color of the road, or null if none exists
+     */
+    public Color getRoad(HexPoint hexPt, HexPiece.RoadLoc loc) {
+        if (!isValidPoint(hexPt)) {
+            return false;
+        }
+        HexPiece hex = board.get(hexPt);
+        return hex.getRoad(loc);
+    }
+
     // TODO helper functions for indicating whether there are settlements or roads on tiles
     // TODO decide on harbors (9 possible, need 6)
     // TODO place settlement method
