@@ -1,5 +1,7 @@
 package src.main.model;
 
+import java.util.Objects;
+
 /**
  * Class used to help identify hex tiles on the board. Every hex can be uniquely determined
  * by a point
@@ -37,5 +39,16 @@ public class HexPoint {
      */
     public int col() {
         return col;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(row, col);
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        HexPoint otherHP = (HexPoint) other;
+        return this.row == otherHP.row() && this.col == otherHP.col();
     }
 }

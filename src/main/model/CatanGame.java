@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Random;
+import java.awt.Color;
 
 /**
  * Represents the game. Handles all game turns and manipulation of player objects
@@ -152,12 +153,12 @@ public class CatanGame {
         List<HexPiece> tiles = new ArrayList<HexPiece>();
         for (HexPiece tile : board.getTiles()) {
             if (num == 12) {
-                if (tile.num() == 2) {
+                if (tile.roll() == 2) {
                     tiles.add(tile);
                     return tiles;
                 }
             } else {
-                if (tile.num() == num) {
+                if (tile.roll() == num) {
                     tiles.add(tile);
                 }
             }
@@ -166,19 +167,38 @@ public class CatanGame {
     }
 
     /**
-     * Builds a road for the player, checking to see that it is valid to do so.
+     * Builds a road for the player, checking to see that it is valid to do so. Since a road
+     * is right between two hexes, calling this method from either hex with the correct
+     * directions should produce the same result. For example, if you insert a road on a given
+     * hex's N location, it's the same as placing a road on the adjacent top hex's S location.
+     * This method should insert the road onto both hexes.
      *
      * @param hex  the point identifying the hex that the road will be built on. note that
      *             a road is technically on two hexes, so this method should update both hexes
-     * @param dir  the direction on the given hex that the player wants to build a road on.
-     *             Again, a road is technically on two hexes, so this dir is with respect to
+     * @param loc  the location on the given hex that the player wants to build a road on.
+     *             Again, a road is technically on two hexes, so this loc is with respect to
      *             the given hex
      * @param player  the player that wants to build this road
      *
      * @return true if the road building is successful, false otherwise
      */
-    public boolean buildRoad(HexPoint hex, BuildingDir dir, Player player) {
+    public boolean buildRoad(HexPoint hex, HexPiece.RoadLoc loc, Player player) {
         // TODO build road method
+        return false;
+    }
+
+    /**
+     * Determines whether a player can build a road on a specified location, based on the
+     * rules of adjacency for roads (must have a road that's adjacent of the same color).
+     *
+     * @param hex  the point to determine whether it is possible to place a road
+     * @param loc  the location on the hex for the road
+     * @param player  the player that wants to build the road
+     *
+     * @return true if a road can be placed here, false otherwise
+     */
+    public boolean canBuildRoad(HexPoint hex, HexPiece.RoadLoc loc, Player player) {
+        return false;
     }
 
     // TODO build settlement method (check for harbors as well)

@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Collections;
 import java.util.List;
 import java.util.ArrayList;
+import java.awt.Color;
+
 /**
  * Represents the board itself in the game. Helps to handle the placing of buildings and
  * roads, ensuring that is in a valid state and abstracts away the details of the hex setup
@@ -75,53 +77,54 @@ public class CatanBoard {
     }
 
     /**
-     * Given a point indicating a hex, along with a direction, returns the adjacent hex,
+     * Given a point indicating a hex, along with a location, returns the adjacent hex,
      * or null if none exists.
      *
      * @param hex  the point identifying the hex
-     * @param dir  the direction for the adjacent hex with respect to the current hex
+     * @param location  the location for the adjacent hex with respect to the current hex
      * 
      * @return the point representing the adjacent hex, or null if none exists
      */
-    public HexPoint getAdjacentHex(HexPoint hex, RoadDir dir) {
+    public HexPoint getAdjacentHex(HexPoint hex, HexPiece.RoadLoc loc) {
         if (!isValidPoint(hex)) {
             return null;
         }
+        int col = hex.col();
         int adjRow = hex.row();
         int adjCol = hex.col();
         if (col == 1 || col == 3) {
-            switch (dir) {
-                case RoadDir.NW:    adjCol -= 1;
-                                    break;
-                case RoadDir.N:     adjRow -= 1;
-                                    break;
-                case RoadDir.NE:    adjCol += 1;
-                                    break;
-                case RoadDir.SE:    adjRow += 1;
-                                    adjCol += 1;
-                                    break;
-                case RoadDir.S:     adjRow += 1;
-                                    break;
-                case RoadDir.SW:    adjRow += 1;
-                                    adjCol -= 1;
-                                    break;
+            switch (loc) {
+                case NW:    adjCol -= 1;
+                            break;
+                case N:     adjRow -= 1;
+                            break;
+                case NE:    adjCol += 1;
+                            break;
+                case SE:    adjRow += 1;
+                            adjCol += 1;
+                            break;
+                case S:     adjRow += 1;
+                            break;
+                case SW:    adjRow += 1;
+                            adjCol -= 1;
+                            break;
             }
         } else { // col == 0, 2, or 4
-            switch (dir) {
-                case RoadDir.NW:    adjCol -= 1;
-                                    adjRow -= 1;
-                                    break;
-                case RoadDir.N:     adjRow -= 1;
-                                    break;
-                case RoadDir.NE:    adjCol += 1;
-                                    adjRow -= 1;
-                                    break;
-                case RoadDir.SE:    adjCol += 1;
-                                    break;
-                case RoadDir.S:     adjRow += 1;
-                                    break;
-                case RoadDir.SW:    adjCol += 1;
-                                    break;
+            switch (loc) {
+                case NW:    adjCol -= 1;
+                            adjRow -= 1;
+                            break;
+                case N:     adjRow -= 1;
+                            break;
+                case NE:    adjCol += 1;
+                            adjRow -= 1;
+                            break;
+                case SE:    adjCol += 1;
+                            break;
+                case S:     adjRow += 1;
+                            break;
+                case SW:    adjCol += 1;
+                            break;
             }
         }
         HexPoint adjPoint = new HexPoint(adjRow, adjCol);
@@ -140,15 +143,24 @@ public class CatanBoard {
      * @return boolean indicating whether given HexPoint is valid
      */
     public boolean isValidPoint(HexPoint point) {
-        int row = point.row();
-        int col = point.col();
-        boolean foundPoint = false;
-        for (int[] pt : hexPoints) {
-            if (pt[0] == row && pt[1] == col) {
-                foundPoint = true;
-            }
+        return board.containsKey(point);
+    }
+
+    /**
+     * Returns true if the hex on a given HexPoint has a road on that location, false otherwise
+     *
+     * @param hexPt  the hexpoint to check
+     * @param loc  the road loc
+     *
+     * @return true if there is a road on the hex point for that loc, false otherwise
+     */
+    public boolean hasRoad(HexPoint hexPt, HexPiece.RoadLoc loc) {
+        if (!isValidPoint(hexPt)) {
+            return false;
         }
-        return foundPoint;
+        HexPiece hex = board.get(hexPt);
+        Color road = hex.getRoad(loc);
+        return road != null;
     }
 
     // TODO helper functions for indicating whether there are settlements or roads on tiles
