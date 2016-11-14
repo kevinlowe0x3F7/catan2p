@@ -61,6 +61,19 @@ public class CatanBoard {
         return tiles;
     }
 
+    /**
+     * Getter method for the tiles as a list
+     *
+     * @return the list of tiles
+     */
+    public List<HexPiece> getTiles() {
+        List<HexPiece> tiles = new ArrayList<HexPiece>();
+        for (Point p : board.keySet()) {
+            tiles.add(board.get(p));
+        }
+        return tiles;
+    }
+
     /** The points of the hex tiles in spiral ordering, used to place the dice numbers. */
     private final int[][] hexPoints = {{2,0},{2,1},{3,2},{2,3},{2,4},{1,4},{0,3},{0,2},
                                         {0,1},{1,0},{1,1},{2,2},{1,3},{1,2}};

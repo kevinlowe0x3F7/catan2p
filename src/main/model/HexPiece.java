@@ -24,7 +24,7 @@ public class HexPiece {
      * The actual buildings for this HexPiece. If the value is non-null for some direction,
      * that indicates that a player has placed a building in that direction.
      */
-    private HashMap<BuildingDir, Color> buildings;
+    private HashMap<BuildingDir, Building> buildings;
 
     /** The die roll number for this hex piece. */
     private int roll;
@@ -34,6 +34,43 @@ public class HexPiece {
 
     /** Indicator for whether this hex piece has the robber currently on it. */
     private boolean hasRobber;
+
+    /** 
+     * Gets the roll that is on the hex piece. For the piece that has both 2 and 12 on
+     * it, just return 2.
+     *
+     * @return a number between 2 through 12 indicating the roll. 
+     */
+    public int roll() {
+        return roll;
+    }
+
+    /**
+     * Gets the resource associated with this hex piece.
+     *
+     * @return The resource type
+     */
+    public Resource resource() {
+        return resource;
+    }
+
+    /**
+     * Returns a list of buildings for this HexPiece. It returns just a list, with no notion
+     * of direction at all for each of the buildings. This list will return only non-null
+     * entries.
+     *
+     * @return a list of buildings, or potentially an empty list
+     */
+    public List<Building> getBuildings() {
+        List<Building> buildingList = new ArrayList<Building>();
+        for (BuildingDir d : buildings.keySet()) {
+            Building building = buildings.get(d);
+            if (building != null) {
+                buildingList.add(building);
+            }
+        }
+        return buildingList;
+    }
 
     /**
      * Initializes a new hex piece with the specified type of resource and die roll number
@@ -46,7 +83,7 @@ public class HexPiece {
         for (RoadDir dir : RoadDir.values()) {
             this.roads.put(dir, null);
         }
-        this.buildings = new HashMap<BuildingDir, Color>();
+        this.buildings = new HashMap<BuildingDir, Building>();
         for (BuildingDir dir : BuildingDir.values()) {
             this.buildings.put(dir, null);
         }

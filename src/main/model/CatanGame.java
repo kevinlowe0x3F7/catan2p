@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Collections;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Represents the game. Handles all game turns and manipulation of player objects
@@ -35,6 +36,9 @@ public class CatanGame {
     /** The holder of the Longest Road card. Null indicates that not one has claimed it. */
     private Player longestRoadOwner;
 
+    /** Random number generator. */
+    private Random rand;
+
     /**
      * Initializes a new game of Catan.
      * 
@@ -53,6 +57,7 @@ public class CatanGame {
         }
         this.longestArmyOwner = null;
         this.longestRoadOwner = null;
+        rand = new Random();
     }
 
     /**
@@ -77,6 +82,83 @@ public class CatanGame {
         }
         Collections.shuffle(devDeck);
     }
+
+    /**
+     * Rolls a dice
+     *
+     * @return a number from 1 to 6, inclusive
+     */
+    public int rollDice() {
+        return rand.nextInt(6) + 1;
+    }
+
+    /**
+     * Allocates resources to the two players based on the die roll
+     *
+     * @param num  the number that was just rolled
+     * @param player  the current player, which gets resources first (in the rare case that
+     *                resources are running out)
+     */
+    public void distributeResources(int num, Player player) {
+        for (HexPiece tile : board.getTiles) {
+            if (tile.roll() == num) {
+                distributeFromTile(tile, player);
+            }
+        }
+    }
+
+    /**
+     * Distribute resources coming from one hex piece based on the current buildings on it.
+     * Makes two passes to ensure that the current player receives their resources first.
+     *
+     * @param tile  the tile where the buildings are on
+     * @param player  the current player
+     */
+    public void distributeFromTile(HexPiece tile, Player player) {
+        Resource res = tile.resource();
+        List<Building> buildings = tiles.getBuildings();
+        for (Building building : buildings) {
+            Player owner = building.owner();
+            if (owner == player) {
+                if (building.type().equals(Building.SETTLEMENT) && resources.get(res) > 0) {
+                    owner.addResource(res);
+                    resources.put(res, resources.get(res) - 1);
+                } else if (building.type().equals(Building.CITY)) {
+                    int resourceAmt = resources.get(res);
+                    if (resourceAmt >= 2) {
+                        owner.addResource(res);
+                        owner.addResource(res);
+                        resources.put(res, resources.get(res) - 2);
+                    } else if (resourceAmt == 1) {
+                        owner.addResource(res);
+                        resources.put(res, resources.get(res) - 1);
+                    }
+                }
+            }
+        }
+        for (Building building : buildings) {
+            Player owner = building.owner();
+            if (owner != player) {
+                if (building.type().equals(Building.SETTLEMENT) && resources.get(res) > 0) {
+                    owner.addResource(res);
+                    resources.put(res, resources.get(res) - 1);
+                } else if (building.type().equals(Building.CITY)) {
+                    int resourceAmt = resources.get(res);
+                    if (resourceAmt >= 2) {
+                        owner.addResource(res);
+                        owner.addResource(res);
+                        resources.put(res, resources.get(res) - 2);
+                    } else if (resourceAmt == 1) {
+                        owner.addResource(res);
+                        resources.put(res, resources.get(res) - 1);
+                    }
+                }
+            }
+        }
+    }
+
+
+
 
     /** The number of cards in the development deck. */
     public static final int DEV_DECK_SIZE = 18;

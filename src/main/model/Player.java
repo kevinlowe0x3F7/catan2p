@@ -36,19 +36,30 @@ public class Player {
     private List<DevelopmentCard> devHand;
 
     /** 
-     *  A list of development cards that the player received on this turn. Used to help
-     *  differentiate between dev cards received on this turn since a player can't play
-     *  development cards on the turn that they receive them.
+     * A list of development cards that the player received on this turn. Used to help
+     * differentiate between dev cards received on this turn since a player can't play
+     * development cards on the turn that they receive them.
      */
     private List<DevelopmentCard> receivedDevCards;
 
-    /** An map for how much of a resource a player needs for maritime trade. Each
-     *  resource is initialized to 4, then as the game progresses, if the player has access
-     *  to harbors then the cost will go down. */
+    /** 
+     * An map for how much of a resource a player needs for maritime trade. Each
+     * resource is initialized to 4, then as the game progresses, if the player has access
+     * to harbors then the cost will go down.
+     */
     private HashMap<Resource, Integer> tradeCosts;
 
     /** An indicator for whether the player played a development card on this turn. */
     private boolean hasPlayedDev;
+
+    /**
+     * Add a resource into the player's hand.
+     *
+     * @param res  The resource to add
+     */
+    public void addResource(Resource res) {
+        hand.add(res);
+    }
 
     /**
      * Initialize a new player, with a specified color
