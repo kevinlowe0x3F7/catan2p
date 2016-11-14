@@ -107,6 +107,9 @@ public class CatanGame {
             requested2.put(r, 0);
         }
         for (HexPiece tile : tilesForNum(num)) {
+            if (tile.hasRobber()) {
+                continue;
+            }
             Resource res = tile.resource();
             for (Building building : tile.getBuildings()) {
                 if (building.owner() == player1) {
@@ -162,11 +165,27 @@ public class CatanGame {
         return tiles;
     }
 
-    // TODO build road method
-    // TODO build settlement method
+    /**
+     * Builds a road for the player, checking to see that it is valid to do so.
+     *
+     * @param hex  the point identifying the hex that the road will be built on. note that
+     *             a road is technically on two hexes, so this method should update both hexes
+     * @param dir  the direction on the given hex that the player wants to build a road on.
+     *             Again, a road is technically on two hexes, so this dir is with respect to
+     *             the given hex
+     * @param player  the player that wants to build this road
+     *
+     * @return true if the road building is successful, false otherwise
+     */
+    public boolean buildRoad(HexPoint hex, BuildingDir dir, Player player) {
+        // TODO build road method
+    }
+
+    // TODO build settlement method (check for harbors as well)
     // TODO build city method
     // TODO initial location choosing
-    // TODO handle 7 roll / knight played method
+    // TODO handle 7 roll (remove over half of cards)
+    // TODO activate robber method
     // TODO victory point devo card
     // TODO road building method
     // TODO year of plenty method
@@ -177,6 +196,7 @@ public class CatanGame {
     // TODO can build cities (resources, not exceeding max, on top of previous settlement)
     // TODO check win method
     // TODO end turn method
+    // TODO calculate longest road method
 
     /** The number of cards in the development deck. */
     public static final int DEV_DECK_SIZE = 18;
@@ -198,5 +218,4 @@ public class CatanGame {
 
     /** The number of year of plenty cards in the development deck. */
     public static final int PLENTIES = 2;
-
 }

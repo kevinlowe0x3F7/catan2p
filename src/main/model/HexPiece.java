@@ -55,6 +55,29 @@ public class HexPiece {
     }
 
     /**
+     * Returns true if this hex piece has the robber on it, false otherwise
+     *
+     * @return boolean indicating whether this hex piece has the robber
+     */
+    public boolean hasRobber() {
+        return hasRobber;
+    }
+
+    /**
+     * Place robber on this hex piece
+     */
+    public void placeRobber() {
+        hasRobber = true;
+    }
+
+    /**
+     * Remove robber from this hex piece
+     */
+    public void removeRobber() {
+        hasRobber = false;
+    }
+
+    /**
      * Returns a list of buildings for this HexPiece. It returns just a list, with no notion
      * of direction at all for each of the buildings. This list will return only non-null
      * entries.

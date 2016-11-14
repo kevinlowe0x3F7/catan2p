@@ -18,18 +18,18 @@ public class CatanBoard {
      *  http://www.quarkphysics.ca/scripsi/hexgrid/
      *  (0, 2) is set as the topmost point in the two-player variant of Catan.
      */
-    HashMap<Point, HexPiece> board;
+    HashMap<HexPoint, HexPiece> board;
 
     /**
      *  Initialize a new CatanBoard. The resources that are set on each hex piece are
      *  shuffled and selected at random, same with the harbors.
      */
     public CatanBoard() {
-        this.board = new HashMap<Point, HexPiece>();
+        this.board = new HashMap<HexPoint, HexPiece>();
         List<Resource> tiles = fillInTiles();
         for (int i = 0; i < TOTAL_TILES; i++) {
             Resource res = tiles.get(i);
-            Point pos = new Point(hexPoints[i][0], hexPoints[i][1]);
+            HexPoint pos = new HexPoint(hexPoints[i][0], hexPoints[i][1]);
             int num = diceNums[i];
             this.board.put(pos, new HexPiece(num, res));
         }
@@ -68,11 +68,97 @@ public class CatanBoard {
      */
     public List<HexPiece> getTiles() {
         List<HexPiece> tiles = new ArrayList<HexPiece>();
-        for (Point p : board.keySet()) {
+        for (HexPoint p : board.keySet()) {
             tiles.add(board.get(p));
         }
         return tiles;
     }
+
+    /**
+     * Given a point indicating a hex, along with a direction, returns the adjacent hex,
+     * or null if none exists.
+     *
+     * @param hex  the point identifying the hex
+     * @param dir  the direction for the adjacent hex with respect to the current hex
+     * 
+     * @return the point representing the adjacent hex, or null if none exists
+     */
+    public HexPoint getAdjacentHex(HexPoint hex, RoadDir dir) {
+        if (!isValidPoint(hex)) {
+            return null;
+        }
+        int adjRow = hex.row();
+        int adjCol = hex.col();
+        if (col == 1 || col == 3) {
+            switch (dir) {
+                case RoadDir.NW:    adjCol -= 1;
+                                    break;
+                case RoadDir.N:     adjRow -= 1;
+                                    break;
+                case RoadDir.NE:    adjCol += 1;
+                                    break;
+                case RoadDir.SE:    adjRow += 1;
+                                    adjCol += 1;
+                                    break;
+                case RoadDir.S:     adjRow += 1;
+                                    break;
+                case RoadDir.SW:    adjRow += 1;
+                                    adjCol -= 1;
+                                    break;
+            }
+        } else { // col == 0, 2, or 4
+            switch (dir) {
+                case RoadDir.NW:    adjCol -= 1;
+                                    adjRow -= 1;
+                                    break;
+                case RoadDir.N:     adjRow -= 1;
+                                    break;
+                case RoadDir.NE:    adjCol += 1;
+                                    adjRow -= 1;
+                                    break;
+                case RoadDir.SE:    adjCol += 1;
+                                    break;
+                case RoadDir.S:     adjRow += 1;
+                                    break;
+                case RoadDir.SW:    adjCol += 1;
+                                    break;
+            }
+        }
+        HexPoint adjPoint = new HexPoint(adjRow, adjCol);
+        if (isValidPoint(adjPoint)) {
+            return adjPoint;
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Returns true if this HexPoint is valid, false otherwise
+     *
+     * @param point  the HexPoint to verify
+     *
+     * @return boolean indicating whether given HexPoint is valid
+     */
+    public boolean isValidPoint(HexPoint point) {
+        int row = point.row();
+        int col = point.col();
+        boolean foundPoint = false;
+        for (int[] pt : hexPoints) {
+            if (pt[0] == row && pt[1] == col) {
+                foundPoint = true;
+            }
+        }
+        return foundPoint;
+    }
+
+    // TODO helper functions for indicating whether there are settlements or roads on tiles
+    // TODO decide on harbors (9 possible, need 6)
+    // TODO place settlement method
+    // TODO place road method
+    // TODO place city method
+    // TODO hasSettlement method
+    // TODO hasRoad method
+    // TODO hasCity method
 
     /** The points of the hex tiles in spiral ordering, used to place the dice numbers. */
     private final int[][] hexPoints = {{2,0},{2,1},{3,2},{2,3},{2,4},{1,4},{0,3},{0,2},
