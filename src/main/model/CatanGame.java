@@ -206,7 +206,18 @@ public class CatanGame {
         if (board.hasRoad(hex, loc)) {
             return false;
         }
-        Color playerColor = player.color();
+        Road adjRoad = board.getRoad(hex, loc.next());
+        if (adjRoad.owner() == player) {
+            return true;
+        }
+        adjRoad = board.getRoad(hex, loc.prev());
+        if (adjRoad.owner() == player) {
+            return true;
+        }
+        HexPoint adjHex = board.getAdjacentHex(hex, loc);
+        if (adjHex == null) {
+            return false;
+        }
     }
 
     // TODO build settlement method (check for harbors as well)

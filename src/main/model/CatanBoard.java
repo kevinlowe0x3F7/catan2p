@@ -161,22 +161,22 @@ public class CatanBoard {
             return false;
         }
         HexPiece hex = board.get(hexPt);
-        Color road = hex.getRoad(loc);
+        Road road = hex.getRoad(loc);
         return road != null;
     }
 
     /**
-     * Returns the road color at the specified location on a given HexPoint, or null if none
+     * Returns the road at the specified location on a given HexPoint, or null if none
      * exists.
      *
      * @param hexPt  the hexpoint to get the road from
      * @param loc  the road loc
      *
-     * @return the color of the road, or null if none exists
+     * @return the road object, or null if none exists
      */
-    public Color getRoad(HexPoint hexPt, HexPiece.RoadLoc loc) {
+    public Road getRoad(HexPoint hexPt, HexPiece.RoadLoc loc) {
         if (!isValidPoint(hexPt)) {
-            return false;
+            return null;
         }
         HexPiece hex = board.get(hexPt);
         return hex.getRoad(loc);

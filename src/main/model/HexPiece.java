@@ -3,7 +3,6 @@ package src.main.model;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
-import java.awt.Color;
 
 /**
  * A representation of a single hex piece on the game board.
@@ -98,7 +97,7 @@ public class HexPiece {
      * The actual roads for this HexPiece. If the value is non-null for some location, that
      * indicates that a player has placed a road on that location.
      */
-    private HashMap<RoadLoc, Color> roads;
+    private HashMap<RoadLoc, Road> roads;
 
     /** 
      * The actual buildings for this HexPiece. If the value is non-null for some location,
@@ -122,7 +121,7 @@ public class HexPiece {
      * @param resource  the type of resource for this hex piece
      */
     public HexPiece(int num, Resource resource) {
-        this.roads = new HashMap<RoadLoc, Color>();
+        this.roads = new HashMap<RoadLoc, Road>();
         for (RoadLoc loc : RoadLoc.values()) {
             this.roads.put(loc, null);
         }
@@ -140,9 +139,9 @@ public class HexPiece {
      *
      * @param loc  The requested road
      *
-     * @return the road indicated by color, which can be null if there's no road there
+     * @return the road, which can be null if there's no road there
      */
-    public Color getRoad(RoadLoc loc) {
+    public Road getRoad(RoadLoc loc) {
         return roads.get(loc);
     }
 
