@@ -84,19 +84,22 @@ public class Player {
     }
 
     /**
-     * Add a resource into the player's hand.
+     * Add n resources into the player's hand.
      *
-     * @param res  The resource to add
+     * @param res  the resource to add
+     * @param n  the number of resources to add
      */
-    public void addResource(Resource res) {
-        hand.add(res);
+    public void addResource(Resource res, int n) {
+        for (int i = 0; i < n; i++) {
+            hand.add(res);
+        }
     }
 
     /**
      * Remove a resource from the player's hand, if the player doesn't have that resource,
      * then do nothing
      *
-     * @param res  The type of resource to remove
+     * @param res  the type of resource to remove
      */
     public void removeResource(Resource res) {
         hand.remove(res);
@@ -177,6 +180,23 @@ public class Player {
     public int resHandSize() {
         return hand.size();
     }
+
+    /**
+     * Indicate that the player has played a dev card this turn.
+     */
+    public void playedDev() {
+        hasPlayedDev = true;
+    }
+
+    /**
+     * Ends the turn for the player, adding cards to their development hand and resetting
+     * any variables necessary.
+     */
+    public void endTurn() {
+        hasPlayedDev = false;
+        devHand.addAll(receivedDevCards);
+    }
+
 
     /** The maximum number of settlements that a single player can play. */
     public static final int MAX_SETTLEMENTS = 4;

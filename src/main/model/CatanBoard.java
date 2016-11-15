@@ -62,7 +62,6 @@ public class CatanBoard {
 
     /**
      * Fill in the tiles, with the correct number of each based on the 2-player variant.
-     * TODO check size of tiles is correct
      *
      * @return The list of tiles, shuffled
      */
@@ -88,17 +87,17 @@ public class CatanBoard {
     }
 
     /**
-     * Getter method for the valid tiles as a list, ie not including sentinels.
+     * Getter method for the valid tiles as a list, ie not including sentinels. It should
+     * return the spiral ordering of the tiles.
      *
      * @return the list of tiles except for sentinels.
      */
     public List<HexPiece> getTiles() {
         List<HexPiece> tiles = new ArrayList<HexPiece>();
-        for (HexPoint p : board.keySet()) {
-            HexPiece tile = board.get(p);
-            if (tile.roll() != 13) {
-                tiles.add(tile);
-            }
+        for (int[] p : validHexPoints) {
+            HexPoint hexPt = new HexPoint(p[0], p[1]);
+            HexPiece tile = board.get(hexPt);
+            tiles.add(tile);
         }
         return tiles;
     }
@@ -108,7 +107,6 @@ public class CatanBoard {
      * this method is only defined on hexes that are part of the actual board, this method
      * should never be null. It may return a sentinel piece as the adjacent one but this method
      * should never be called on a sentinel piece. If it does, it will return null.
-     * TODO test getting adjacent hex
      *
      * @param hex  the point identifying the hex
      * @param location  the location for the adjacent hex with respect to the current hex
@@ -164,7 +162,6 @@ public class CatanBoard {
     /**
      * Returns true if this HexPoint is valid, false otherwise. Valid is defined as being
      * in the actual grid (no sentinel pieces)
-     * TODO test valid point
      *
      * @param point  the HexPoint to verify
      *

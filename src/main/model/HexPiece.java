@@ -11,7 +11,6 @@ import java.util.ArrayList;
  */
 public class HexPiece {
     /** Indicates the locations in which we can place roads. */
-    // TODO test road location methods
     public enum RoadLoc {
         N,
         NE,

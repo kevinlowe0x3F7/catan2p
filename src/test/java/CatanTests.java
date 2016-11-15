@@ -9,6 +9,8 @@ import org.junit.runner.Result;
 import org.junit.runner.notification.Failure;
 
 import java.util.Scanner;
+import java.util.HashMap;
+import java.util.List;
 import java.awt.Color;
 
 /**
@@ -40,6 +42,19 @@ public class CatanTests {
         loc = loc.prev(); assertEquals(loc, HexPiece.RoadLoc.SE);
         loc = loc.prev(); assertEquals(loc, HexPiece.RoadLoc.NE);
         loc = loc.prev(); assertEquals(loc, HexPiece.RoadLoc.N);
+    }
+
+    @Test
+    public void testHexPointHashing() {
+        HashMap<HexPoint, Integer> map = new HashMap<HexPoint, Integer>();
+        map.put(new HexPoint(2, 3), 5);
+        assertTrue(map.containsKey(new HexPoint(2, 3)));
+        assertEquals((int) map.get(new HexPoint(2, 3)), 5);
+        assertFalse(map.containsKey(new HexPoint(3, 5)));
+
+        map.put(new HexPoint(2, 3), 10);
+        assertTrue(map.containsKey(new HexPoint(2, 3)));
+        assertEquals((int) map.get(new HexPoint(2, 3)), 10);
     }
 
     @Test
@@ -101,6 +116,51 @@ public class CatanTests {
         assertEquals(board.getAdjacentHex(test5, HexPiece.RoadLoc.SW), new HexPoint(4, 1));
         HexPoint test6 = new HexPoint(3, 5);
         assertEquals(board.getAdjacentHex(test6, HexPiece.RoadLoc.NE), new HexPoint(2, 6));
+    }
+
+    @Test
+    public void testGameandPlayerInitialization() {
+        CatanGame g = new CatanGame(Color.WHITE, Color.BLUE);
+        assertEquals(g.devDeckSize(), CatanGame.DEV_DECK_SIZE);
+        for (Resource r : Resource.values()) {
+            assertEquals(g.resourceLeft(r), CatanGame.INITIAL_RESOURCE_SIZE);
+        }
+        Player p = new Player(Color.WHITE);
+        assertEquals(p.color(), Color.WHITE);
+        assertEquals(0, p.resHandSize());
+        assertEquals(0, p.roads());
+        assertEquals(0, p.settlements());
+        assertEquals(0, p.cities());
+        assertEquals(0, p.knights());
+    }
+
+    @Test
+    public void testTilesForNum() {
+        CatanGame g = new CatanGame(Color.WHITE, Color.BLUE);
+        List<HexPiece> tilesForTwo = g.tilesForNum(2);
+        assertEquals(tilesForTwo.size(), 1);
+        assertEquals(2, tilesForTwo.get(0).roll());
+        tilesForTwo = g.tilesForNum(12);
+        assertEquals(tilesForTwo.size(), 1);
+        assertEquals(2, tilesForTwo.get(0).roll());
+
+        List<HexPiece> tilesForThree = g.tilesForNum(3);
+        assertEquals(tilesForThree.size(), 1);
+        assertEquals(3, tilesForThree.get(0).roll());
+        List<HexPiece> tilesForSix = g.tilesForNum(6);
+        assertEquals(tilesForSix.size(), 1);
+        assertEquals(6, tilesForSix.get(0).roll());
+        List<HexPiece> tilesForEleven = g.tilesForNum(11);
+        assertEquals(tilesForEleven.size(), 1);
+        assertEquals(11, tilesForEleven.get(0).roll());
+
+        int[] doubles = {5, 8, 10, 9, 4};
+        for (int num : doubles) {
+            List<HexPiece> tiles = g.tilesForNum(num);
+            assertEquals(tiles.size(), 2);
+            assertEquals(tiles.get(0).roll(), num);
+            assertEquals(tiles.get(1).roll(), num);
+        }
     }
 
     public static void main(String[] args) {

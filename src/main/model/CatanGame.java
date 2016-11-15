@@ -63,8 +63,6 @@ public class CatanGame {
 
     /**
      * Fills in a brand new development deck and shuffles it.
-     *
-     * TODO check size of dev deck
      */
     private void initializeDevDeck() {
         this.devDeck = new ArrayList<DevelopmentCard>();
@@ -84,6 +82,26 @@ public class CatanGame {
             devDeck.add(DevelopmentCard.PLENTY);
         }
         Collections.shuffle(devDeck);
+    }
+
+    /**
+     * Returns the current size of the development deck.
+     *
+     * @return the size of the dev deck
+     */
+    public int devDeckSize() {
+        return devDeck.size() - devIndex;
+    }
+
+    /**
+     * Return the size of the resource stack for some resource.
+     *
+     * @param res  the resource to query
+     *
+     * @return the amount of cards left for that resource
+     */
+    public int resourceLeft(Resource res) {
+        return resources.get(res);
     }
 
     /**
@@ -135,12 +153,8 @@ public class CatanGame {
         for (Resource r : Resource.values()) {
             int totalRequested = requested1.get(r) + requested2.get(r);
             if (totalRequested <= resources.get(r)) {
-                for (int i = 0; i < requested1.get(r); i++) {
-                    player1.addResource(r);
-                }
-                for (int i = 0; i < requested2.get(r); i++) {
-                    player2.addResource(r);
-                }
+                player1.addResource(r, requested1.get(r));
+                player2.addResource(r, requested2.get(r));
                 resources.put(r, resources.get(r) - totalRequested);
             }
         }
@@ -148,7 +162,6 @@ public class CatanGame {
 
     /**
      * Gets the hex tiles that correspond to a dice roll.
-     * TODO test that numbers are correct, especially for 2/12
      *
      * @param num  The dice sum number to check for
      *
@@ -188,7 +201,9 @@ public class CatanGame {
      * @return true if the road building is successful, false otherwise
      */
     public boolean buildRoad(HexPoint hex, HexPiece.RoadLoc loc, Player player) {
-        return board.buildRoad(hex, loc, player);
+        // TODO check player resources first, then build road, then decrement resources
+        // TODO also put back resources into pile and increment road count
+        return false;
     }
 
 
