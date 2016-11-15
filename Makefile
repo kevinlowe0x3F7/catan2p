@@ -10,14 +10,14 @@ CLASS_PATH_MODELS = src/main/model/*.class
 CLASS_PATH_TESTS = src/test/java/*.class
 
 default:
-	$(JCC) $(JFLAGS) $(SRC_PATH_MODELS)
-	$(JCC) $(JFLAGS) $(TEST_PATH)
+	@$(JCC) $(JFLAGS) $(SRC_PATH_MODELS)
+	@$(JCC) $(JFLAGS) $(TEST_PATH)
 
 clean:
-	rm $(CLASS_PATH_MODELS) 
-	rm $(CLASS_PATH_TESTS)
+	@rm $(CLASS_PATH_MODELS) 
+	@rm $(CLASS_PATH_TESTS)
 
 test:
-	make
-	java $(TEST_EXEC) 
-	make clean
+	@make
+	@java $(TEST_EXEC) 
+	@make clean

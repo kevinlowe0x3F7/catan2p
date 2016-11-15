@@ -43,16 +43,18 @@ public class CatanBoard {
         this.board = new HashMap<HexPoint, HexPiece>();
         List<Resource> tiles = fillInTiles();
         for (int i = 0; i < TOTAL_TILES; i++) {
+            Resource res;
             if (i < tiles.size()) {
-                Resource res = tiles.get(i);
+                res = tiles.get(i);
             } else {
-                Resource res = null;
+                res = null;
             }
             HexPoint pos = new HexPoint(hexPoints[i][0], hexPoints[i][1]);
+            int num;
             if (i < diceNums.length) { 
-                int num = diceNums[i];
+                num = diceNums[i];
             } else {
-                int num = 13;
+                num = 13;
             }
             this.board.put(pos, new HexPiece(num, res));
         }
@@ -171,8 +173,8 @@ public class CatanBoard {
     public boolean isValidPoint(HexPoint point) {
         int r = point.row();
         int c = point.col();
-        for (int[] point : validHexPoints) {
-            if (point[0] == r && point[1] == c) {
+        for (int[] p : validHexPoints) {
+            if (p[0] == r && p[1] == c) {
                 return true;
             }
         }
@@ -213,38 +215,97 @@ public class CatanBoard {
         return hex.getRoad(loc);
     }
 
+    /**
+     * Builds a road on this board with the given information, if it's possible to. Because
+     * a road is technically on two hexes, it will update both.
+     *
+     * @param hexPT  the point identifying the hex that the road will be built on.
+     * @param loc  the location for the hex to place the road
+     * @param player  the player that wants to build this road
+     *
+     * @return true for successful build, false otherwise
+     */
+    public boolean buildRoad(HexPoint hexPt, HexPiece.RoadLoc loc, Player player) {
+        if (!canBuildRoad(hexPt, loc, player)) {
+            return false;
+        }
+        HexPiece hex = board.get(hexPt);
+        hex.buildRoad(loc, player);
+
+        HexPiece adjHex = board.get(getAdjacentHex(hexPt, loc));
+        adjHex.buildRoad(loc.complement(), player);
+        return true;
+    }
+
+    /**
+     * Determines whether a player can build a road on a specified location, based on the
+     * rules of adjacency for roads (must have a road that's adjacent of the same color).
+     *
+     * @param hex  the point to determine whether it is possible to place a road
+     * @param loc  the location on the hex for the road
+     * @param player  the player that wants to build the road
+     *
+     * @return true if a road can be placed here, false otherwise
+     */
+    public boolean canBuildRoad(HexPoint hex, HexPiece.RoadLoc loc, Player player) {
+        if (!isValidPoint(hex) || hasRoad(hex, loc)) {
+            return false;
+        }
+        Road adjRoad = getRoad(hex, loc.next());
+        if (adjRoad.owner() == player) {
+            return true;
+        }
+        adjRoad = getRoad(hex, loc.prev());
+        if (adjRoad.owner() == player) {
+            return true;
+        }
+        HexPoint adjHex = getAdjacentHex(hex, loc);
+        HexPiece.RoadLoc complement = loc.complement();
+        adjRoad = getRoad(adjHex, complement.next());
+        if (adjRoad.owner() == player) {
+            return true;
+        }
+        adjRoad = getRoad(adjHex, complement.prev());
+        if (adjRoad.owner() == player) {
+            return true;
+        }
+        return false;
+    }
+
     // TODO helper functions for indicating whether there are settlements or roads on tiles
     // TODO decide on harbors (9 possible, need 6)
     // TODO place settlement method
     // TODO place road method
     // TODO place city method
     // TODO hasSettlement method
-    // TODO hasRoad method
     // TODO hasCity method
+    // TODO can build settlement (resources, not exceeding max, distance rule)
+    // TODO can build road (resources, not exceeding max, connecting rule)
+    // TODO can build cities (resources, not exceeding max, on top of previous settlement)
 
     /**
      * The points of the hex tiles in spiral ordering, used to place the dice numbers.
      * These are the hex points that are considered valid, the ones that are actually on
      * the board.
      */
-    private final int[][] validHexPoints = {{3,1},{3,2},{4,3},{3,4},{3,5},{2,5},{1,4},{1,3},
-                                            {1,2},{2,1},{2,2},{3,3},{2,4},{2,3}};
+    public static final int[][] validHexPoints = {{3,1},{3,2},{4,3},{3,4},{3,5},{2,5},{1,4},
+                                                {1,3},{1,2},{2,1},{2,2},{3,3},{2,4},{2,3}};
     /**
      * A list of all the hex points on the board, including the sentinel points.
      */
-    private final int[][] hexPoints = {{3,1},{3,2},{4,3},{3,4},{3,5},{2,5},{1,4},{1,3},
+    public static final int[][] hexPoints = {{3,1},{3,2},{4,3},{3,4},{3,5},{2,5},{1,4},{1,3},
                                         {1,2},{2,1},{2,2},{3,3},{2,4},{2,3},{1,0},{2,0},{3,0},
                                         {4,1},{4,2},{5,3},{4,4},{4,5},{3,6},{2,6},{1,6},{1,5},
                                         {0,4},{0,3},{0,2},{1,1}};
 
     /** The dice numbers in spiral order, should correspond to validHexPoints. */
-    private final int[] diceNums = {5, 2, 6, 3, 8, 10, 9, 11, 4, 8, 10, 9, 5, 4};
+    public static final int[] diceNums = {5, 2, 6, 3, 8, 10, 9, 11, 4, 8, 10, 9, 5, 4};
 
     /** The total number of tiles on the board, including sentinel pieces. */
-    private static final int TOTAL_TILES = 30;
+    public static final int TOTAL_TILES = 30;
 
     /** The total number of valid tiles on the board, not including sentinel pieces. */
-    private static final int TOTAL_VALID_TILES = 14;
+    public static final int TOTAL_VALID_TILES = 14;
 
     /** The number of hexes for the wheat resource. */
     public static final int FIELDS = 3;

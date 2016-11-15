@@ -29,7 +29,7 @@ public class HexPiece {
          * @return the complement of that road, which is defined to be the road direction
          *         from the adjacent hex's perspective
          */
-        public RoadLoc roadComplement() {
+        public RoadLoc complement() {
             switch (this) {
                 case NW:    return RoadLoc.SE;
                 case N:     return RoadLoc.S;
@@ -47,7 +47,7 @@ public class HexPiece {
          * @return the next road location, going clockwise
          */
         public RoadLoc next() {
-            return cachedValues[(this.ordinal() + 1) % 6];
+            return cachedValues[Math.floorMod(this.ordinal() + 1, 6)];
         }
 
         /**
@@ -57,7 +57,7 @@ public class HexPiece {
          * @return the previous road location, going clockwise
          */
         public RoadLoc prev() {
-            return cachedValues[(this.ordinal() - 1) % 6];
+            return cachedValues[Math.floorMod(this.ordinal() - 1, 6)];
         }
     }
 
@@ -79,7 +79,7 @@ public class HexPiece {
          * @return the next building location, going clockwise
          */
         public BuildingLoc next() {
-            return cachedValues[(this.ordinal() + 1) % 6];
+            return cachedValues[Math.floorMod(this.ordinal() + 1, 6)];
         }
 
         /**
@@ -89,7 +89,7 @@ public class HexPiece {
          * @return the previous building location, going clockwise
          */
         public BuildingLoc prev() {
-            return cachedValues[(this.ordinal() - 1) % 6];
+            return cachedValues[Math.floorMod(this.ordinal() - 1, 6)];
         }
     }
 
@@ -173,6 +173,16 @@ public class HexPiece {
             }
         }
         return buildingList;
+    }
+
+    /**
+     * Place a road on the specified location with the given player as owner.
+     *
+     * @param loc  the location for the new road
+     * @param owner  the owner of this road
+     */
+    public void buildRoad(RoadLoc loc, Player owner) {
+        roads.put(loc, new Road(owner));
     }
 
     /** 

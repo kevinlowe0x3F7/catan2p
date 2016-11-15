@@ -188,37 +188,9 @@ public class CatanGame {
      * @return true if the road building is successful, false otherwise
      */
     public boolean buildRoad(HexPoint hex, HexPiece.RoadLoc loc, Player player) {
-        // TODO build road method
-        return false;
+        return board.buildRoad(hex, loc, player);
     }
 
-    /**
-     * Determines whether a player can build a road on a specified location, based on the
-     * rules of adjacency for roads (must have a road that's adjacent of the same color).
-     *
-     * @param hex  the point to determine whether it is possible to place a road
-     * @param loc  the location on the hex for the road
-     * @param player  the player that wants to build the road
-     *
-     * @return true if a road can be placed here, false otherwise
-     */
-    public boolean canBuildRoad(HexPoint hex, HexPiece.RoadLoc loc, Player player) {
-        if (board.hasRoad(hex, loc)) {
-            return false;
-        }
-        Road adjRoad = board.getRoad(hex, loc.next());
-        if (adjRoad.owner() == player) {
-            return true;
-        }
-        adjRoad = board.getRoad(hex, loc.prev());
-        if (adjRoad.owner() == player) {
-            return true;
-        }
-        HexPoint adjHex = board.getAdjacentHex(hex, loc);
-        if (adjHex == null) {
-            return false;
-        }
-    }
 
     // TODO build settlement method (check for harbors as well)
     // TODO build city method
@@ -230,9 +202,6 @@ public class CatanGame {
     // TODO year of plenty method
     // TODO monopoly method
     // TODO maritime trade
-    // TODO can build settlement (resources, not exceeding max, distance rule)
-    // TODO can build road (resources, not exceeding max, connecting rule)
-    // TODO can build cities (resources, not exceeding max, on top of previous settlement)
     // TODO check win method
     // TODO end turn method
     // TODO calculate longest road method
