@@ -81,6 +81,28 @@ public class CatanTests {
         assertEquals(hills, 0);
     }
 
+    @Test
+    public void testAdjacentHexMethod() {
+        CatanBoard board = new CatanBoard();
+        HexPoint test1 = new HexPoint(2, 1);
+        assertEquals(board.getAdjacentHex(test1, HexPiece.RoadLoc.NW), new HexPoint(1, 0));
+        assertEquals(board.getAdjacentHex(test1, HexPiece.RoadLoc.SE), new HexPoint(2, 2));
+        HexPoint test2 = new HexPoint(1, 3);
+        assertEquals(board.getAdjacentHex(test2, HexPiece.RoadLoc.N), new HexPoint(0, 3));
+        assertEquals(board.getAdjacentHex(test2, HexPiece.RoadLoc.NE), new HexPoint(0, 4));
+        HexPoint test3 = new HexPoint(3, 3);
+        assertEquals(board.getAdjacentHex(test3, HexPiece.RoadLoc.SW), new HexPoint(3, 2));
+        HexPoint test4 = new HexPoint(2, 4);
+        assertEquals(board.getAdjacentHex(test4, HexPiece.RoadLoc.NE), new HexPoint(2, 5));
+        assertEquals(board.getAdjacentHex(test4, HexPiece.RoadLoc.SE), new HexPoint(3, 5));
+        assertEquals(board.getAdjacentHex(test4, HexPiece.RoadLoc.NW), new HexPoint(2, 3));
+        assertEquals(board.getAdjacentHex(test4, HexPiece.RoadLoc.SW), new HexPoint(3, 3));
+        HexPoint test5 = new HexPoint(3, 2);
+        assertEquals(board.getAdjacentHex(test5, HexPiece.RoadLoc.SW), new HexPoint(4, 1));
+        HexPoint test6 = new HexPoint(3, 5);
+        assertEquals(board.getAdjacentHex(test6, HexPiece.RoadLoc.NE), new HexPoint(2, 6));
+    }
+
     public static void main(String[] args) {
         Result result = JUnitCore.runClasses(CatanTests.class);
         int tests = result.getRunCount();

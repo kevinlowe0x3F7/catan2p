@@ -154,7 +154,7 @@ public class CatanBoard {
                             break;
                 case S:     adjRow += 1;
                             break;
-                case SW:    adjCol += 1;
+                case SW:    adjCol -= 1;
                             break;
             }
         }
